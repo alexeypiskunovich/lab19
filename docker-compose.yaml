@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  nest-js-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized  # ⚠️ ИЗМЕНИТЕ на оптимизированный
+    container_name: nest-js-api
+    image: nest-js-api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_HOST: postgres-db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: nestdb
+      JWT_SECRET: aqwsedrftgyhujikolpmnbvcxzasdfgh
+    depends_on:
+      - postgres-db
+    restart: unless-stopped
+
+  postgres-db:
+    image: postgres:17.6-trixie
+    container_name: postgres-laba16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nestdb
+    volumes:
+      - postgres-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres-db-data:
