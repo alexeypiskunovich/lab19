@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,13 +28,4 @@ jobs:
         run: npm run build
 
       - name: Build Docker image
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
-
-      - name: Login to Heroku Container Registry
-        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_ --password-stdin registry.heroku.com
-
-      - name: Push Docker image to Heroku
-        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-
-      - name: Release app on Heroku
-        run: heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
+        run: docker build -t laba19-nestjs:latest .
